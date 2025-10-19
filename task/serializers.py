@@ -9,7 +9,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'user', 'title', 'description', 'completed', 'created_at']
+        fields = ['id', 'user', 'title', 'description', 'deadline', 'completed', 'created_at']
         read_only_fields = ['id', 'user', 'created_at']
 
     def create(self, validated_data):

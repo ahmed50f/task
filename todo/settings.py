@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from celery.schedules import crontab
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -154,3 +156,21 @@ OTP_TIMEOUT = 300  # صلاحية الكود (بالثواني) = 5 دقايق
 
 # عدد الثواني اللي لازم المستخدم يستنى قبل ما يطلب كود جديد
 WAIT_TIMES = [60, 120, 300, 600]  # 1 دقيقة، 2، 5، 10
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BEAT_SCHEDULE = {}
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+# reminder
+CELERY_BEAT_SCHEDULE = {
+    'send_deadline_reminders_daily': {
+        'task': 'tasks.tasks.send_deadline_reminders',
+        'schedule': crontab(hour=0, minute=0),
+    },
+}
